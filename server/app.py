@@ -16,9 +16,7 @@ async def step():
 def root():
     return {"message": "OpenEnv running"}
 
-@app.on_event("startup")
-async def startup_event():
-    asyncio.create_task(main())
+
 # ✅ IMPORTANT ADD THIS
 def main():
     return app
