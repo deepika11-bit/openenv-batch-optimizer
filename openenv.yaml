@@ -23,18 +23,18 @@ reward_range: [0.0, 1.0]
 tasks:
   - name: energy_optimization
     description: Minimize energy consumption
-    grader:
-      name: reward_threshold
-      threshold: 0.5
+    graders:
+      - name: reward_threshold
+        threshold: 0.5
 
   - name: yield_energy_balance
     description: Balance yield and energy
-    grader:
-      name: reward_threshold
-      threshold: 0.5
+    graders:
+      - name: reward_threshold
+        threshold: 0.5
 
   - name: full_optimization
     description: Optimize yield, quality, and energy
-    grader:
-      name: reward_threshold
-      threshold: 0.5
+    graders:
+      - name: reward_threshold
+        threshold: 0.5
