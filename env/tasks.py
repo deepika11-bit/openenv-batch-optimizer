@@ -14,7 +14,6 @@ class BaseTask:
 class EnergyOptimizationTask(BaseTask):
     def run(self):
         obs = self.env.reset()
-
         total_energy = 0
 
         for _ in range(10):
@@ -31,18 +30,15 @@ class EnergyOptimizationTask(BaseTask):
                 break
 
         avg_energy = total_energy / 10
-
-        # Score: lower energy = higher score
         score = max(0, min(1, 1 - (avg_energy / 150)))
 
-        return score
+        return {"score": score}
 
 
 # 🟡 MEDIUM TASK — Balance Yield + Energy
 class YieldEnergyTask(BaseTask):
     def run(self):
         obs = self.env.reset()
-
         total_score = 0
 
         for _ in range(10):
@@ -64,14 +60,12 @@ class YieldEnergyTask(BaseTask):
                 break
 
         score = max(0, min(1, total_score / 10))
-        return score
-
+        return {"score": score}
 
 # 🔴 HARD TASK — Full Optimization
 class FullOptimizationTask(BaseTask):
     def run(self):
         obs = self.env.reset()
-
         total_score = 0
 
         for _ in range(10):
@@ -94,4 +88,4 @@ class FullOptimizationTask(BaseTask):
                 break
 
         score = max(0, min(1, total_score / 10))
-        return score
+        return {"score": score}
