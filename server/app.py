@@ -1,6 +1,4 @@
 from fastapi import FastAPI
-import asyncio
-from inference import main
 
 app = FastAPI()
 
@@ -16,7 +14,10 @@ async def step():
 def root():
     return {"message": "OpenEnv running"}
 
-
-# ✅ IMPORTANT ADD THIS
+# ✅ REQUIRED FUNCTION
 def main():
     return app
+
+# ✅ REQUIRED FOR VALIDATION
+if __name__ == "__main__":
+    main()
