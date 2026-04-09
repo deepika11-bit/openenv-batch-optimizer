@@ -1,0 +1,14 @@
+[project]
+name = "openenv-batch-optimizer"
+version = "0.1.0"
+description = "AI batch optimization environment"
+authors = [
+    { name = "Deepika" }
+]
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "numpy",
+    "openai",
+    "python-dotenv"
+]
