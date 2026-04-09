@@ -1,0 +1,30 @@
+name: batch-optimizer-env
+description: AI-driven manufacturing batch optimization environment with multi-objective reward (yield, quality, energy)
+
+version: 1.0
+
+entrypoint: env.environment:BatchEnvironment
+
+observation_space:
+  temperature: float
+  pressure: float
+  speed: float
+  energy: float
+  yield_rate: float
+  quality: float
+
+action_space:
+  temperature_change: float
+  pressure_change: float
+  speed_change: float
+
+reward_range: [0.0, 1.0]
+
+tasks:
+  - name: energy_optimization
+    description: Minimize energy consumption
+  - name: yield_energy_balance
+    description: Balance yield and energy
+  - name: full_optimization
+    description: Optimize yield, quality, and energy
+    
