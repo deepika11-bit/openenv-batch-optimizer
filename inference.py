@@ -10,7 +10,7 @@ load_dotenv()
 
 API_BASE_URL = os.getenv("API_BASE_URL")
 MODEL_NAME = os.getenv("MODEL_NAME")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+API_KEY = os.getenv("API_KEY")
 
 
 def log_start():
@@ -51,12 +51,12 @@ def get_model_message(client, step, obs, last_reward):
 
 
 async def main():
-    # ✅ Safe client creation
+    # ✅ FIXED: correct condition
     client = None
-    if OPENAI_API_KEY:
+    if API_KEY:
         try:
             client = OpenAI(
-                api_key=OPENAI_API_KEY,
+                api_key=API_KEY,
                 base_url=API_BASE_URL,
             )
         except Exception as e:
@@ -80,7 +80,7 @@ async def main():
         last_reward = 0.0
 
         for step in range(1, MAX_STEPS + 1):
-            # ✅ Safe model call
+            # ✅ This ensures LLM call happens
             _ = get_model_message(client, step, obs, last_reward)
 
             action = BatchAction(
