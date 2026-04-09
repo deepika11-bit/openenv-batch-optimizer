@@ -6,7 +6,7 @@ colorTo: green
 sdk: docker
 pinned: false
 license: mit
-short_description: AI-driven OpenEnv environment for manufacturing batch optimization
+short_description: AI batch optimization environment
 ---
 
 # OpenEnv Batch Optimizer
