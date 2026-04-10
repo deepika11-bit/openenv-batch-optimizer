@@ -24,17 +24,20 @@ tasks:
   - name: energy_optimization
     description: Minimize energy consumption
     graders:
-      - name: reward_threshold
-        threshold: 0.5
+      - type: reward_threshold
+        params:
+          threshold: 0.5
 
   - name: yield_energy_balance
     description: Balance yield and energy
     graders:
-      - name: reward_threshold
-        threshold: 0.5
+      - type: reward_threshold
+        params:
+          threshold: 0.5
 
   - name: full_optimization
     description: Optimize yield, quality, and energy
     graders:
-      - name: reward_threshold
-        threshold: 0.5
+      - type: reward_threshold
+        params:
+          threshold: 0.5
