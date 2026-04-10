@@ -117,7 +117,7 @@ async def main():
         print("[ERROR]", str(e), flush=True)
 
     finally:
-        log_end(success=True, steps=steps_taken, score=0.7, rewards=rewards)
+        log_end(success=success, steps=steps_taken, score=score, rewards=rewards)
 
 
 if __name__ == "__main__":

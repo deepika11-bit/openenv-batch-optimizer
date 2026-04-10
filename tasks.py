@@ -32,7 +32,7 @@ class EnergyOptimizationTask(BaseTask):
         avg_energy = total_energy / 10
         score = max(0.0, min(1.0, 1 - (avg_energy / 150)))
 
-        return {"score": float(score)}
+        return float(score)
 
 
 # 🟡 MEDIUM
@@ -60,7 +60,7 @@ class YieldEnergyTask(BaseTask):
                 break
 
         score = max(0.0, min(1.0, total_score / 10))
-        return {"score": float(score)}
+        return float(score)
 
 
 # 🔴 HARD
@@ -89,7 +89,7 @@ class FullOptimizationTask(BaseTask):
                 break
 
         score = max(0.0, min(1.0, total_score / 10))
-        return {"score": float(score)}
+        return float(score)
 
 
 # 🔥🔥 CRITICAL FIX (THIS IS WHAT YOU WERE MISSING)
