@@ -1,5 +1,5 @@
 name: batch-optimizer-env
-description: AI-driven manufacturing batch optimization
+description: AI-driven manufacturing batch optimization environment with multi-objective reward (yield, quality, energy)
 
 version: 1.0
 
@@ -22,21 +22,18 @@ reward_range: [0.0, 1.0]
 
 tasks:
   - name: energy_optimization
-    entrypoint: tasks:EnergyOptimizationTask
     description: Minimize energy consumption
     graders:
       - name: reward_threshold
         threshold: 0.5
 
   - name: yield_energy_balance
-    entrypoint: tasks:YieldEnergyTask
     description: Balance yield and energy
     graders:
       - name: reward_threshold
         threshold: 0.5
 
   - name: full_optimization
-    entrypoint: tasks:FullOptimizationTask
     description: Optimize yield, quality, and energy
     graders:
       - name: reward_threshold

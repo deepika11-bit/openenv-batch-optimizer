@@ -1,4 +1,4 @@
-from env.tasks import EnergyOptimizationTask, YieldEnergyTask, FullOptimizationTask
+from tasks import EnergyOptimizationTask, YieldEnergyTask, FullOptimizationTask
 
 print("Easy Task Score:", EnergyOptimizationTask().run())
 print("Medium Task Score:", YieldEnergyTask().run())
