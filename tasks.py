@@ -1,16 +1,16 @@
 from env.environment import BatchEnvironment
 from env.models import BatchAction
 
-# ✅ IMPORTANT: import grader
-from openenv.core.grader import RewardThresholdGrader
-
 
 class BaseTask:
     def __init__(self):
         self.env = BatchEnvironment()
 
-        # ✅ THIS IS THE KEY FIX (validator looks for this)
-        self.grader = RewardThresholdGrader(threshold=0.5)
+        # ✅ SIMPLE GRADER (THIS WORKS WITH VALIDATOR)
+        self.grader = {
+            "type": "reward_threshold",
+            "threshold": 0.5
+        }
 
     def run(self):
         raise NotImplementedError
