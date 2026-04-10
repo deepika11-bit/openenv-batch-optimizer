@@ -1,40 +1,27 @@
-name: batch-optimizer-env
-description: AI-driven manufacturing batch optimization environment with multi-objective reward (yield, quality, energy)
+spec_version: 1
 
-version: 1.0
+name: batch-optimizer-env
+description: AI-driven manufacturing batch optimization environment
+
+runtime: python
 
 entrypoint: env.environment:BatchEnvironment
 
-observation_space:
-  temperature: float
-  pressure: float
-  speed: float
-  energy: float
-  yield_rate: float
-  quality: float
-
-action_space:
-  temperature_change: float
-  pressure_change: float
-  speed_change: float
-
-reward_range: [0.0, 1.0]
-
 tasks:
-  - name: energy_optimization
+  energy_optimization:
     entrypoint: tasks:EnergyOptimizationTask
-    graders:
-      - name: reward_threshold
-        reward_threshold: 0.5
+    grader:
+      type: reward_threshold
+      threshold: 0.5
 
-  - name: yield_energy_balance
+  yield_energy_balance:
     entrypoint: tasks:YieldEnergyTask
-    graders:
-      - name: reward_threshold
-        reward_threshold: 0.5
+    grader:
+      type: reward_threshold
+      threshold: 0.5
 
-  - name: full_optimization
+  full_optimization:
     entrypoint: tasks:FullOptimizationTask
-    graders:
-      - name: reward_threshold
-        reward_threshold: 0.5
+    grader:
+      type: reward_threshold
+      threshold: 0.5
