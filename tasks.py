@@ -13,8 +13,8 @@ class BaseTask:
 # 🟢 EASY TASK — Minimize Energy
 class EnergyOptimizationTask(BaseTask):
     def run(self):
-        print("🔥 TASK RUNNING DEBUG 🔥", flush=True)
-        return {"score": 0.6}
+        obs = self.env.reset()
+        total_energy = 0
 
         for _ in range(10):
             action = BatchAction(
@@ -30,7 +30,9 @@ class EnergyOptimizationTask(BaseTask):
                 break
 
         avg_energy = total_energy / 10
-        score = max(0, min(1, 1 - (avg_energy / 150)))
+
+        # ✅ Proper grader logic
+        score = max(0.0, min(1.0, 1 - (avg_energy / 150)))
 
         return {"score": score}
 
@@ -59,8 +61,9 @@ class YieldEnergyTask(BaseTask):
             if done:
                 break
 
-        score = max(0, min(1, total_score / 10))
+        score = max(0.0, min(1.0, total_score / 10))
         return {"score": score}
+
 
 # 🔴 HARD TASK — Full Optimization
 class FullOptimizationTask(BaseTask):
@@ -87,5 +90,13 @@ class FullOptimizationTask(BaseTask):
             if done:
                 break
 
-        score = max(0, min(1, total_score / 10))
+        score = max(0.0, min(1.0, total_score / 10))
         return {"score": score}
+
+
+# ✅ CRITICAL: Task registry for OpenEnv
+TASK_REGISTRY = {
+    "energy_optimization": EnergyOptimizationTask,
+    "yield_energy_balance": YieldEnergyTask,
+    "full_optimization": FullOptimizationTask,
+}
