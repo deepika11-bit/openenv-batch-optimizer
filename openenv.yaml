@@ -21,29 +21,20 @@ action_space:
 reward_range: [0.0, 1.0]
 
 tasks:
-  - id: energy_optimization
-    name: energy_optimization
-    description: Minimize energy consumption
-    entrypoint: env.tasks:EnergyOptimizationTask
+  - name: energy_optimization
+    entrypoint: tasks:EnergyOptimizationTask
     graders:
-      - type: reward_threshold
-        params:
-          threshold: 0.5
+      - name: reward_threshold
+        threshold: 0.5
 
-  - id: yield_energy_balance
-    name: yield_energy_balance
-    description: Balance yield and energy
-    entrypoint: env.tasks:YieldEnergyTask
+  - name: yield_energy_balance
+    entrypoint: tasks:YieldEnergyTask
     graders:
-      - type: reward_threshold
-        params:
-          threshold: 0.5
+      - name: reward_threshold
+        threshold: 0.5
 
-  - id: full_optimization
-    name: full_optimization
-    description: Optimize yield, quality, and energy
-    entrypoint: env.tasks:FullOptimizationTask
+  - name: full_optimization
+    entrypoint: tasks:FullOptimizationTask
     graders:
-      - type: reward_threshold
-        params:
-          threshold: 0.5
+      - name: reward_threshold
+        threshold: 0.5
