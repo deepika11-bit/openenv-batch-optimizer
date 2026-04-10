@@ -23,18 +23,18 @@ reward_range: [0.0, 1.0]
 tasks:
   - name: energy_optimization
     entrypoint: tasks:EnergyOptimizationTask
-    graders:
-      - name: reward_threshold
-        threshold: 0.5
+    grader:
+      name: reward_threshold
+      threshold: 0.5
 
   - name: yield_energy_balance
     entrypoint: tasks:YieldEnergyTask
-    graders:
-      - name: reward_threshold
-        threshold: 0.5
+    grader:
+      name: reward_threshold
+      threshold: 0.5
 
   - name: full_optimization
     entrypoint: tasks:FullOptimizationTask
-    graders:
-      - name: reward_threshold
-        threshold: 0.5
+    grader:
+      name: reward_threshold
+      threshold: 0.5

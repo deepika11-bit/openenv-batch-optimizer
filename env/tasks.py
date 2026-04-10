@@ -10,11 +10,11 @@ class BaseTask:
         raise NotImplementedError
 
 
-# 🟢 EASY TASK — Minimize Energy
+# 🟢 EASY
 class EnergyOptimizationTask(BaseTask):
     def run(self):
-        print("🔥 TASK RUNNING DEBUG 🔥", flush=True)
-        return {"score": 0.6}
+        obs = self.env.reset()
+        total_energy = 0
 
         for _ in range(10):
             action = BatchAction(
@@ -30,12 +30,12 @@ class EnergyOptimizationTask(BaseTask):
                 break
 
         avg_energy = total_energy / 10
-        score = max(0, min(1, 1 - (avg_energy / 150)))
+        score = max(0.0, min(1.0, 1 - (avg_energy / 150)))
 
-        return {"score": score}
+        return {"score": float(score)}
 
 
-# 🟡 MEDIUM TASK — Balance Yield + Energy
+# 🟡 MEDIUM
 class YieldEnergyTask(BaseTask):
     def run(self):
         obs = self.env.reset()
@@ -59,10 +59,11 @@ class YieldEnergyTask(BaseTask):
             if done:
                 break
 
-        score = max(0, min(1, total_score / 10))
-        return {"score": score}
+        score = max(0.0, min(1.0, total_score / 10))
+        return {"score": float(score)}
 
-# 🔴 HARD TASK — Full Optimization
+
+# 🔴 HARD
 class FullOptimizationTask(BaseTask):
     def run(self):
         obs = self.env.reset()
@@ -87,5 +88,13 @@ class FullOptimizationTask(BaseTask):
             if done:
                 break
 
-        score = max(0, min(1, total_score / 10))
-        return {"score": score}
+        score = max(0.0, min(1.0, total_score / 10))
+        return {"score": float(score)}
+
+
+# 🔥🔥 CRITICAL FIX (THIS IS WHAT YOU WERE MISSING)
+TASKS = {
+    "energy_optimization": EnergyOptimizationTask,
+    "yield_energy_balance": YieldEnergyTask,
+    "full_optimization": FullOptimizationTask,
+}
