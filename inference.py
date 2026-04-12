@@ -18,13 +18,21 @@ def log_end(success, steps, score, rewards):
 # 🔥 REQUIRED LLM CALL
 def call_llm():
     try:
+        api_key = os.environ.get("API_KEY")
+        base_url = os.environ.get("API_BASE_URL")
+
+        # 🔴 If env not available → skip safely
+        if not api_key or not base_url:
+            print("[LLM SKIPPED] Missing API env vars", flush=True)
+            return
+
         client = OpenAI(
-            api_key=os.environ["API_KEY"],
-            base_url=os.environ["API_BASE_URL"],
+            api_key=api_key,
+            base_url=base_url,
         )
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # safe default
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": "You are optimizing a process."},
                 {"role": "user", "content": "Give a short optimization tip."}
