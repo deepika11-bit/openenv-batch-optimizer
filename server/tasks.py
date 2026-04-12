@@ -52,7 +52,6 @@ class EnergyOptimizationTask(BaseTask):
         score = 1 - (avg_energy / 150)
 
         score = normalize_score(score)
-        print("EnergyOptimizationTask Score:", score, flush=True)
 
         return score
 
@@ -93,7 +92,6 @@ class YieldEnergyTask(BaseTask):
         score = total_score / max(1, actual_steps)
 
         score = normalize_score(score)
-        print("YieldEnergyTask Score:", score, flush=True)
 
         return score
 
@@ -139,7 +137,6 @@ class FullOptimizationTask(BaseTask):
         score = total_score / max(1, actual_steps)
 
         score = normalize_score(score)
-        print("FullOptimizationTask Score:", score, flush=True)
 
         return score
 
