@@ -37,7 +37,12 @@ class EnergyOptimizationTask(BaseTask):
                 break
 
         avg_energy = total_energy / steps
-        score = max(0.0, min(1.0, 1 - (avg_energy / 150)))
+
+        # ✅ CORRECT SCORE CALCULATION
+        score = 1 - (avg_energy / 150)
+
+        # ✅ STRICT RANGE FIX
+        score = max(0.01, min(0.99, score))
 
         return float(score)
 
@@ -73,7 +78,11 @@ class YieldEnergyTask(BaseTask):
             if done:
                 break
 
-        score = max(0.0, min(1.0, total_score / steps))
+        score = total_score / steps
+
+        # ✅ STRICT RANGE FIX
+        score = max(0.01, min(0.99, score))
+
         return float(score)
 
 
@@ -114,11 +123,15 @@ class FullOptimizationTask(BaseTask):
             if done:
                 break
 
-        score = max(0.0, min(1.0, total_score / steps))
+        score = total_score / steps
+
+        # ✅ STRICT RANGE FIX
+        score = max(0.01, min(0.99, score))
+
         return float(score)
 
 
-# ✅ REQUIRED for OpenEnv discovery (KEEP THIS)
+# ✅ REQUIRED for OpenEnv discovery
 TASKS = {
     "energy_optimization": EnergyOptimizationTask,
     "yield_energy_balance": YieldEnergyTask,
