@@ -9,19 +9,19 @@ entrypoint: env.environment:BatchEnvironment
 
 tasks:
   - id: energy_optimization
-    entrypoint: tasks:EnergyOptimizationTask
+    entrypoint: ./tasks.py:EnergyOptimizationTask
     grader:
       type: reward_threshold
       threshold: 0.5
 
   - id: yield_energy_balance
-    entrypoint: tasks:YieldEnergyTask
+    entrypoint: ./tasks.py:YieldEnergyTask
     grader:
       type: reward_threshold
       threshold: 0.5
 
   - id: full_optimization
-    entrypoint: tasks:FullOptimizationTask
+    entrypoint: ./tasks.py:FullOptimizationTask
     grader:
       type: reward_threshold
       threshold: 0.5
