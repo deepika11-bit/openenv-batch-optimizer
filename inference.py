@@ -1,7 +1,7 @@
 import asyncio
 import os
 from openai import OpenAI
-from tasks import TASKS
+from server.tasks import TASKS
 
 
 def log_start():

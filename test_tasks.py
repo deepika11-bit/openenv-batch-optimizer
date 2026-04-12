@@ -1,4 +1,4 @@
-from tasks import (
+from server.tasks import (
     EnergyOptimizationTask,
     YieldEnergyTask,
     FullOptimizationTask,
