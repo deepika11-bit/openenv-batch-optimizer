@@ -10,7 +10,7 @@ class BaseTask:
         raise NotImplementedError
 
 
-# ✅ TASK 1
+# ✅ TASK 1 — Energy Optimization
 class EnergyOptimizationTask(BaseTask):
     grader = {
         "type": "reward_threshold",
@@ -30,18 +30,17 @@ class EnergyOptimizationTask(BaseTask):
             obs, reward, done, _ = self.env.step(action)
             total += reward
 
+        # ✅ Normalize score
         score = total / 10
+        score = max(0.0, min(1.0, score))
 
-        # 🔥 STRICT RANGE
-        if score <= 0:
-            score = 0.01
-        elif score >= 1:
-            score = 0.99
-
-        return float(score)
+        # ✅ IMPORTANT: Return dict
+        return {
+            "score": float(score)
+        }
 
 
-# ✅ TASK 2
+# ✅ TASK 2 — Yield + Energy
 class YieldEnergyTask(BaseTask):
     grader = {
         "type": "reward_threshold",
@@ -61,17 +60,16 @@ class YieldEnergyTask(BaseTask):
             obs, reward, done, _ = self.env.step(action)
             total += reward
 
+        # ✅ Normalize score
         score = total / 10
+        score = max(0.0, min(1.0, score))
 
-        if score <= 0:
-            score = 0.01
-        elif score >= 1:
-            score = 0.99
-
-        return float(score)
+        return {
+            "score": float(score)
+        }
 
 
-# ✅ TASK 3
+# ✅ TASK 3 — Full Optimization
 class FullOptimizationTask(BaseTask):
     grader = {
         "type": "reward_threshold",
@@ -91,11 +89,10 @@ class FullOptimizationTask(BaseTask):
             obs, reward, done, _ = self.env.step(action)
             total += reward
 
+        # ✅ Normalize score
         score = total / 10
+        score = max(0.0, min(1.0, score))
 
-        if score <= 0:
-            score = 0.01
-        elif score >= 1:
-            score = 0.99
-
-        return float(score)
+        return {
+            "score": float(score)
+        }
