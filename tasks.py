@@ -6,18 +6,17 @@ class BaseTask:
     def __init__(self):
         self.env = BatchEnvironment()
 
-        # ✅ SIMPLE GRADER (THIS WORKS WITH VALIDATOR)
-        self.grader = {
-            "type": "reward_threshold",
-            "threshold": 0.5
-        }
-
     def run(self):
         raise NotImplementedError
 
 
 # 🟢 EASY
 class EnergyOptimizationTask(BaseTask):
+    grader = {
+        "type": "reward_threshold",
+        "threshold": 0.5
+    }
+
     def run(self):
         obs = self.env.reset()
         total_energy = 0
@@ -45,6 +44,11 @@ class EnergyOptimizationTask(BaseTask):
 
 # 🟡 MEDIUM
 class YieldEnergyTask(BaseTask):
+    grader = {
+        "type": "reward_threshold",
+        "threshold": 0.5
+    }
+
     def run(self):
         obs = self.env.reset()
         total_score = 0
@@ -75,6 +79,11 @@ class YieldEnergyTask(BaseTask):
 
 # 🔴 HARD
 class FullOptimizationTask(BaseTask):
+    grader = {
+        "type": "reward_threshold",
+        "threshold": 0.5
+    }
+
     def run(self):
         obs = self.env.reset()
         total_score = 0
