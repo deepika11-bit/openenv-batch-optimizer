@@ -55,22 +55,34 @@ async def main():
         call_llm()
 
         # 🔥 RUN ALL TASKS
+        step_num = 1
+
         for task_name, TaskClass in TASKS.items():
             task = TaskClass()
 
-            print(f"[RUNNING TASK] {task_name}", flush=True)
+            try:
+                score = task.run()
 
-            score = task.run()
+                if score <= 0:
+                    score = 0.01
+                elif score >= 1:
+                    score = 0.99
 
-            if score <= 0:
-                score = 0.01
-            elif score >= 1:
-                score = 0.99
+                print(
+                    f"[STEP] step={step_num} action={task_name} reward={score:.4f} done=True error=None",
+                    flush=True,
+                )
 
-            print(f"[TASK RESULT] {task_name} score={score}", flush=True)
+                rewards.append(score)
+                steps += 1
+                step_num += 1
 
-            rewards.append(score)
-            steps += 1
+            except Exception as e:
+                print(
+                    f"[STEP] step={step_num} action={task_name} reward=0.0 done=True error={str(e)}",
+                    flush=True,
+                )
+                step_num += 1
 
         final_score = sum(rewards) / max(1, len(rewards))
         success = final_score > 0.5
