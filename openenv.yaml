@@ -5,7 +5,7 @@ description: AI-driven manufacturing batch optimization environment
 
 runtime: python
 
-entrypoint: env.environment:BatchEnvironment
+entrypoint: environment:BatchEnvironment
 
 tasks:
   - id: energy_optimization
