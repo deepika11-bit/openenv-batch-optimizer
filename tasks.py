@@ -6,17 +6,18 @@ class BaseTask:
     def __init__(self):
         self.env = BatchEnvironment()
 
+        # ✅ SIMPLE GRADER (THIS WORKS WITH VALIDATOR)
+        self.grader = {
+            "type": "reward_threshold",
+            "threshold": 0.5
+        }
+
     def run(self):
         raise NotImplementedError
 
 
 # 🟢 EASY
 class EnergyOptimizationTask(BaseTask):
-    grader = {
-        "type": "reward_threshold",
-        "threshold": 0.5
-    }
-
     def run(self):
         obs = self.env.reset()
         total_energy = 0
@@ -37,23 +38,13 @@ class EnergyOptimizationTask(BaseTask):
                 break
 
         avg_energy = total_energy / steps
-
-        # ✅ CORRECT SCORE CALCULATION
-        score = 1 - (avg_energy / 150)
-
-        # ✅ STRICT RANGE FIX
-        score = max(0.01, min(0.99, score))
+        score = max(0.0, min(1.0, 1 - (avg_energy / 150)))
 
         return float(score)
 
 
 # 🟡 MEDIUM
 class YieldEnergyTask(BaseTask):
-    grader = {
-        "type": "reward_threshold",
-        "threshold": 0.5
-    }
-
     def run(self):
         obs = self.env.reset()
         total_score = 0
@@ -78,21 +69,12 @@ class YieldEnergyTask(BaseTask):
             if done:
                 break
 
-        score = total_score / steps
-
-        # ✅ STRICT RANGE FIX
-        score = max(0.01, min(0.99, score))
-
+        score = max(0.0, min(1.0, total_score / steps))
         return float(score)
 
 
 # 🔴 HARD
 class FullOptimizationTask(BaseTask):
-    grader = {
-        "type": "reward_threshold",
-        "threshold": 0.5
-    }
-
     def run(self):
         obs = self.env.reset()
         total_score = 0
@@ -123,15 +105,11 @@ class FullOptimizationTask(BaseTask):
             if done:
                 break
 
-        score = total_score / steps
-
-        # ✅ STRICT RANGE FIX
-        score = max(0.01, min(0.99, score))
-
+        score = max(0.0, min(1.0, total_score / steps))
         return float(score)
 
 
-# ✅ REQUIRED for OpenEnv discovery
+# ✅ REQUIRED for OpenEnv discovery (KEEP THIS)
 TASKS = {
     "energy_optimization": EnergyOptimizationTask,
     "yield_energy_balance": YieldEnergyTask,
