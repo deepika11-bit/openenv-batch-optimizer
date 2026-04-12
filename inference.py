@@ -18,17 +18,9 @@ def log_end(success, steps, score, rewards):
 # 🔥 REQUIRED LLM CALL
 def call_llm():
     try:
-        api_key = os.environ.get("API_KEY")
-        base_url = os.environ.get("API_BASE_URL")
-
-        # 🔴 If env not available → skip safely
-        if not api_key or not base_url:
-            print("[LLM SKIPPED] Missing API env vars", flush=True)
-            return
-
         client = OpenAI(
-            api_key=api_key,
-            base_url=base_url,
+            api_key=os.environ.get("API_KEY", "dummy"),
+            base_url=os.environ.get("API_BASE_URL", "https://api.openai.com/v1"),
         )
 
         response = client.chat.completions.create(
