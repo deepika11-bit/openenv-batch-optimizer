@@ -1,5 +1,5 @@
-from env.environment import BatchEnvironment
-from env.models import BatchAction
+from environment import BatchEnvironment
+from models import BatchAction
 
 env = BatchEnvironment()
 obs = env.reset()

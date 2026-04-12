@@ -38,9 +38,12 @@ class EnergyOptimizationTask(BaseTask):
                 break
 
         avg_energy = total_energy / steps
-        score = max(0.0, min(1.0, 1 - (avg_energy / 150)))
+        score = 1 - (avg_energy / 150)
 
-        return float(score)
+        # ✅ STRICT RANGE FIX
+        score = max(0.01, min(0.99, score))
+
+        return float(score) 
 
 
 # 🟡 MEDIUM
@@ -73,7 +76,10 @@ class YieldEnergyTask(BaseTask):
             if done:
                 break
 
-        score = max(0.0, min(1.0, total_score / steps))
+        score = total_score / steps
+        score = max(0.01, min(0.99, score))
+
+        return float(score)
         return float(score)
 
 
@@ -113,7 +119,10 @@ class FullOptimizationTask(BaseTask):
             if done:
                 break
 
-        score = max(0.0, min(1.0, total_score / steps))
+        score = total_score / steps
+        score = max(0.01, min(0.99, score))
+
+        return float(score)
         return float(score)
 
 
