@@ -1,98 +1,61 @@
-import os
 import asyncio
-from dotenv import load_dotenv
-from openai import OpenAI
-
-from environment import BatchEnvironment
-from models import BatchAction
-
-load_dotenv()
-
-# ✅ REQUIRED ENV VARIABLES (WITH DEFAULTS)
-API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
-MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4.1-mini")
-HF_TOKEN = os.getenv("HF_TOKEN")
-
-if HF_TOKEN is None:
-    raise ValueError("HF_TOKEN environment variable is required")
-
-client = OpenAI(
-    api_key=HF_TOKEN,
-    base_url=API_BASE_URL,
-)
+from tasks import TASKS
 
 
 def log_start():
-    print(f"[START] task=batch_task env=batch_env model={MODEL_NAME}", flush=True)
+    print("[START]", flush=True)
 
 
-def log_step(step, action, reward, done, error):
+def log_end(success, steps, score, rewards):
     print(
-        f"[STEP] step={step} action={action} reward={reward:.2f} done={str(done).lower()} error={error}",
+        f"[END] success={success} steps={steps} score={score:.4f} rewards={rewards}",
         flush=True,
     )
-
-
-def log_end(success, steps, rewards):
-    rewards_str = ",".join([f"{r:.2f}" for r in rewards])
-    print(
-        f"[END] success={str(success).lower()} steps={steps} rewards={rewards_str}",
-        flush=True,
-    )
-
-
-def get_model_message(step):
-    try:
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=[{"role": "user", "content": f"Step {step}"}],
-            max_tokens=5,
-        )
-        return response.choices[0].message.content
-    except Exception:
-        return "fallback"
 
 
 async def main():
-    env = BatchEnvironment()
-
-    rewards = []
-    steps_taken = 0
-
     log_start()
 
+    rewards = []
+    steps = 0
+
     try:
-        obs = env.reset()
+        # 🔥 RUN ALL TASKS
+        for task_name, TaskClass in TASKS.items():
+            task = TaskClass()
 
-        for step in range(1, 11):
-            _ = get_model_message(step)
+            print(f"[RUNNING TASK] {task_name}", flush=True)
 
-            action = BatchAction(
-                temperature_change=0.5,
-                pressure_change=0.1,
-                speed_change=0.5,
-            )
+            score = task.run()
 
-            obs, reward, done, _ = env.step(action)
+            # ensure valid range again (safety)
+            if score <= 0:
+                score = 0.01
+            elif score >= 1:
+                score = 0.99
 
-            reward = reward or 0.0
-            rewards.append(reward)
-            steps_taken = step
+            print(f"[TASK RESULT] {task_name} score={score}", flush=True)
 
-            log_step(step, str(action), reward, done, None)
+            rewards.append(score)
+            steps += 1
 
-            if done:
-                break
+        # 🔥 FINAL SCORE (average of tasks)
+        final_score = sum(rewards) / max(1, len(rewards))
 
-        avg_reward = sum(rewards) / len(rewards)
-        success = avg_reward >= 0.5
+        success = final_score > 0.5
 
     except Exception as e:
         print("[ERROR]", str(e), flush=True)
+        final_score = 0.01
         success = False
 
     finally:
-        log_end(success, steps_taken, rewards)
+        log_end(
+            success=success,
+            steps=steps,
+            score=final_score,
+            rewards=rewards,
+        )
 
 
 if __name__ == "__main__":

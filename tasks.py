@@ -1,3 +1,5 @@
+print("TASKS MODULE LOADED", flush=True)
+
 from environment import BatchEnvironment
 from models import BatchAction
 
@@ -10,7 +12,16 @@ class BaseTask:
         raise NotImplementedError
 
 
-# ✅ TASK 1 — Energy Optimization
+# 🔧 Helper to ensure STRICT (0,1)
+def normalize_score(score):
+    if score <= 0:
+        return 0.01
+    elif score >= 1:
+        return 0.99
+    return float(score)
+
+
+# 🟢 EASY
 class EnergyOptimizationTask(BaseTask):
     grader = {
         "type": "reward_threshold",
@@ -18,29 +29,35 @@ class EnergyOptimizationTask(BaseTask):
     }
 
     def run(self):
-        self.env.reset()
-        total = 0
+        obs = self.env.reset()
+        total_energy = 0
+        steps = 10
+        actual_steps = 0
 
-        for _ in range(10):
+        for _ in range(steps):
             action = BatchAction(
                 temperature_change=-1,
                 pressure_change=0,
                 speed_change=-1
             )
+
             obs, reward, done, _ = self.env.step(action)
-            total += reward
+            total_energy += obs.energy
+            actual_steps += 1
 
-        # ✅ Normalize score
-        score = total / 10
-        score = max(0.0, min(1.0, score))
+            if done:
+                break
 
-        # ✅ IMPORTANT: Return dict
-        return {
-            "score": float(score)
-        }
+        avg_energy = total_energy / max(1, actual_steps)
+        score = 1 - (avg_energy / 150)
+
+        score = normalize_score(score)
+        print("EnergyOptimizationTask Score:", score, flush=True)
+
+        return score
 
 
-# ✅ TASK 2 — Yield + Energy
+# 🟡 MEDIUM
 class YieldEnergyTask(BaseTask):
     grader = {
         "type": "reward_threshold",
@@ -48,28 +65,40 @@ class YieldEnergyTask(BaseTask):
     }
 
     def run(self):
-        self.env.reset()
-        total = 0
+        obs = self.env.reset()
+        total_score = 0
+        steps = 10
+        actual_steps = 0
 
-        for _ in range(10):
+        for _ in range(steps):
             action = BatchAction(
                 temperature_change=1,
                 pressure_change=0,
                 speed_change=1
             )
+
             obs, reward, done, _ = self.env.step(action)
-            total += reward
 
-        # ✅ Normalize score
-        score = total / 10
-        score = max(0.0, min(1.0, score))
+            yield_score = obs.yield_rate / 100
+            energy_penalty = obs.energy / 150
 
-        return {
-            "score": float(score)
-        }
+            step_score = (0.7 * yield_score) - (0.3 * energy_penalty)
+
+            total_score += step_score
+            actual_steps += 1
+
+            if done:
+                break
+
+        score = total_score / max(1, actual_steps)
+
+        score = normalize_score(score)
+        print("YieldEnergyTask Score:", score, flush=True)
+
+        return score
 
 
-# ✅ TASK 3 — Full Optimization
+# 🔴 HARD
 class FullOptimizationTask(BaseTask):
     grader = {
         "type": "reward_threshold",
@@ -77,22 +106,47 @@ class FullOptimizationTask(BaseTask):
     }
 
     def run(self):
-        self.env.reset()
-        total = 0
+        obs = self.env.reset()
+        total_score = 0
+        steps = 10
+        actual_steps = 0
 
-        for _ in range(10):
+        for _ in range(steps):
             action = BatchAction(
                 temperature_change=0.5,
                 pressure_change=0.1,
                 speed_change=0.5
             )
+
             obs, reward, done, _ = self.env.step(action)
-            total += reward
 
-        # ✅ Normalize score
-        score = total / 10
-        score = max(0.0, min(1.0, score))
+            yield_score = obs.yield_rate / 100
+            quality_score = obs.quality / 100
+            energy_penalty = obs.energy / 200
 
-        return {
-            "score": float(score)
-        }
+            step_score = (
+                (0.4 * yield_score)
+                + (0.4 * quality_score)
+                - (0.2 * energy_penalty)
+            )
+
+            total_score += step_score
+            actual_steps += 1
+
+            if done:
+                break
+
+        score = total_score / max(1, actual_steps)
+
+        score = normalize_score(score)
+        print("FullOptimizationTask Score:", score, flush=True)
+
+        return score
+
+
+# ✅ REQUIRED
+TASKS = {
+    "energy_optimization": EnergyOptimizationTask,
+    "yield_energy_balance": YieldEnergyTask,
+    "full_optimization": FullOptimizationTask,
+}

@@ -1,3 +1,12 @@
+spec_version: 1
+
+name: batch-optimizer-env
+description: AI-driven manufacturing batch optimization environment
+
+runtime: python
+
+entrypoint: env.environment:BatchEnvironment
+
 tasks:
   - id: energy_optimization
     entrypoint: tasks:EnergyOptimizationTask
