@@ -1,5 +1,3 @@
-print("TASKS MODULE LOADED", flush=True)
-
 from environment import BatchEnvironment
 from models import BatchAction
 
@@ -12,123 +10,92 @@ class BaseTask:
         raise NotImplementedError
 
 
-# 🟢 EASY
+# ✅ TASK 1
 class EnergyOptimizationTask(BaseTask):
     grader = {
         "type": "reward_threshold",
         "threshold": 0.5
     }
+
     def run(self):
-        obs = self.env.reset()
-        total_energy = 0
+        self.env.reset()
+        total = 0
 
-        steps = 10
-
-        for _ in range(steps):
+        for _ in range(10):
             action = BatchAction(
                 temperature_change=-1,
                 pressure_change=0,
                 speed_change=-1
             )
-
             obs, reward, done, _ = self.env.step(action)
-            total_energy += obs.energy
+            total += reward
 
-            if done:
-                break
+        score = total / 10
 
-        avg_energy = total_energy / steps
-        score = 1 - (avg_energy / 150)
+        # 🔥 STRICT RANGE
+        if score <= 0:
+            score = 0.01
+        elif score >= 1:
+            score = 0.99
 
-        # ✅ STRICT RANGE FIX
-        score = max(0.01, min(0.99, score))
-
-        return float(score) 
+        return float(score)
 
 
-# 🟡 MEDIUM
+# ✅ TASK 2
 class YieldEnergyTask(BaseTask):
     grader = {
         "type": "reward_threshold",
         "threshold": 0.5
     }
+
     def run(self):
-        obs = self.env.reset()
-        total_score = 0
+        self.env.reset()
+        total = 0
 
-        steps = 10
-
-        for _ in range(steps):
+        for _ in range(10):
             action = BatchAction(
                 temperature_change=1,
                 pressure_change=0,
                 speed_change=1
             )
-
             obs, reward, done, _ = self.env.step(action)
+            total += reward
 
-            yield_score = obs.yield_rate / 100
-            energy_penalty = obs.energy / 150
+        score = total / 10
 
-            step_score = (0.7 * yield_score) - (0.3 * energy_penalty)
-            total_score += step_score
-
-            if done:
-                break
-
-        score = total_score / steps
-        score = max(0.01, min(0.99, score))
+        if score <= 0:
+            score = 0.01
+        elif score >= 1:
+            score = 0.99
 
         return float(score)
-        return float(score)
 
 
-# 🔴 HARD
+# ✅ TASK 3
 class FullOptimizationTask(BaseTask):
     grader = {
         "type": "reward_threshold",
         "threshold": 0.5
     }
+
     def run(self):
-        obs = self.env.reset()
-        total_score = 0
+        self.env.reset()
+        total = 0
 
-        steps = 10
-
-        for _ in range(steps):
+        for _ in range(10):
             action = BatchAction(
                 temperature_change=0.5,
                 pressure_change=0.1,
                 speed_change=0.5
             )
-
             obs, reward, done, _ = self.env.step(action)
+            total += reward
 
-            yield_score = obs.yield_rate / 100
-            quality_score = obs.quality / 100
-            energy_penalty = obs.energy / 200
+        score = total / 10
 
-            step_score = (
-                (0.4 * yield_score)
-                + (0.4 * quality_score)
-                - (0.2 * energy_penalty)
-            )
-
-            total_score += step_score
-
-            if done:
-                break
-
-        score = total_score / steps
-        score = max(0.01, min(0.99, score))
+        if score <= 0:
+            score = 0.01
+        elif score >= 1:
+            score = 0.99
 
         return float(score)
-        return float(score)
-
-
-# ✅ REQUIRED for OpenEnv discovery (KEEP THIS)
-TASKS = {
-    "energy_optimization": EnergyOptimizationTask,
-    "yield_energy_balance": YieldEnergyTask,
-    "full_optimization": FullOptimizationTask,
-}
