@@ -50,7 +50,9 @@ class EnergyOptimizationTask(BaseTask):
         avg_energy = total_energy / max(1, actual_steps)
         score = 1 - (avg_energy / 150)
 
-        return normalize_score(score)
+        return {
+            "score": normalize_score(score)
+        }
 
 
 # 🟡 MEDIUM
@@ -87,7 +89,9 @@ class YieldEnergyTask(BaseTask):
 
         score = total_score / max(1, actual_steps)
 
-        return normalize_score(score)
+        return {
+            "score": normalize_score(score)
+        }
 
 
 # 🔴 HARD
@@ -129,7 +133,9 @@ class FullOptimizationTask(BaseTask):
 
         score = total_score / max(1, actual_steps)
 
-        return normalize_score(score)
+        return {
+            "score": normalize_score(score)
+        }
 
 
 # ✅ REQUIRED
