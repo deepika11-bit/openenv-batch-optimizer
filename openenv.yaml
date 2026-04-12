@@ -11,17 +11,14 @@ tasks:
   - id: energy_optimization
     entrypoint: server.tasks:EnergyOptimizationTask
     grader:
-      type: reward_threshold
-      threshold: 0.5
+      type: score
 
   - id: yield_energy_balance
     entrypoint: server.tasks:YieldEnergyTask
     grader:
-      type: reward_threshold
-      threshold: 0.5
+      type: score
 
   - id: full_optimization
     entrypoint: server.tasks:FullOptimizationTask
     grader:
-      type: reward_threshold
-      threshold: 0.5
+      type: score

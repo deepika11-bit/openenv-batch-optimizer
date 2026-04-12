@@ -24,8 +24,7 @@ def normalize_score(score):
 # 🟢 EASY
 class EnergyOptimizationTask(BaseTask):
     grader = {
-        "type": "reward_threshold",
-        "threshold": 0.5
+        "type": "score"
     }
 
     def run(self):
@@ -51,16 +50,13 @@ class EnergyOptimizationTask(BaseTask):
         avg_energy = total_energy / max(1, actual_steps)
         score = 1 - (avg_energy / 150)
 
-        score = normalize_score(score)
-
-        return score
+        return normalize_score(score)
 
 
 # 🟡 MEDIUM
 class YieldEnergyTask(BaseTask):
     grader = {
-        "type": "reward_threshold",
-        "threshold": 0.5
+        "type": "score"
     }
 
     def run(self):
@@ -91,16 +87,13 @@ class YieldEnergyTask(BaseTask):
 
         score = total_score / max(1, actual_steps)
 
-        score = normalize_score(score)
-
-        return score
+        return normalize_score(score)
 
 
 # 🔴 HARD
 class FullOptimizationTask(BaseTask):
     grader = {
-        "type": "reward_threshold",
-        "threshold": 0.5
+        "type": "score"
     }
 
     def run(self):
@@ -136,9 +129,7 @@ class FullOptimizationTask(BaseTask):
 
         score = total_score / max(1, actual_steps)
 
-        score = normalize_score(score)
-
-        return score
+        return normalize_score(score)
 
 
 # ✅ REQUIRED
