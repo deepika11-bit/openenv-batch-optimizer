@@ -1,7 +1,7 @@
 import random
 from typing import Tuple
 
-from env.models import BatchObservation, BatchAction
+from models import BatchObservation, BatchAction
 
 
 class BatchEnvironment:
